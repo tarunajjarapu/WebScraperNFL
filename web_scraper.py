@@ -1,4 +1,4 @@
-# Name: Tarun Ajjarapu
+#Name: Tarun Ajjarapu
 
 import requests
 from bs4 import BeautifulSoup
@@ -9,9 +9,19 @@ from tkinter import ttk
 class Find:
 
     def __init__(self):
+        """
+        This initializes the lists of players for all positions
+        """
         self.__all_lists = None
 
     def web_scrape(self, url):
+        """
+        Scrapes the pro football reference website for all its data from
+        pro NFL players. Creates lists based on the players position and
+        ranked based on NFL fantasy points
+        :param url: website to be searched for data
+        :return: None
+        """
         current_page = requests.get(url)
         soup = BeautifulSoup(current_page.text, 'html.parser')
         for a in soup.findAll('a'):
@@ -55,10 +65,21 @@ class Find:
                             fantasy_list_te]
 
     def get_lists(self):
+        """
+        Allows user to access the data of the ranked players
+        :return: the instance variable for ranked players
+        """
         return self.__all_lists
 
 
 def main():
+    """
+    Creates all the necessary buttons, labels, etc. for a new tkinter
+    instance. This creates the foundation, and creates the program set for
+    QBs in 2022. It shows the fantasy scores on the left side of the players
+    names. It also allows the user to switch which year they want to search.
+    :return: None
+    """
     url = 'https://www.pro-football-reference.com/years/2022/fantasy.htm'
     curr = Find()
     curr.web_scrape(url)
@@ -139,6 +160,14 @@ def main():
 
 
 def set_lists(test_val, curr, instructions):
+    """
+    Creates a new url to be searched for since the user wants to choose a new
+    year
+    :param test_val: the year being chosen
+    :param curr: instance of the find so that new data can be accessed
+    :param instructions: output so that the user can understand what to do
+    :return: None
+    """
     url = 'https://www.pro-football-reference.com/years/' + str(
         test_val.get()) + '/fantasy.htm'
     instructions['text'] = 'Select a position to update list'
@@ -146,6 +175,16 @@ def set_lists(test_val, curr, instructions):
 
 
 def change_position(all_labels, control_label, all_lists, index, instructions):
+    """
+    Button pressed, user wants to switch to a new position. Displays the new
+    players at each position ranked.
+    :param all_labels: the list of labels to be changed for the new position
+    :param control_label: label being used to display current position at top
+    :param all_lists: list of all lists of players at all positions
+    :param index: index for the position being chosen
+    :param instructions: output so that the user can understand what to do
+    :return:
+    """
     choices = ['QB', 'RB', 'WR', 'TE']
     control_label['text'] = choices[index]
     for i in range(0, 10):
